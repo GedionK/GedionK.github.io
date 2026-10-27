@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>News Clipper - TikTok sign-in</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 3rem auto; max-width: 32rem; padding: 0 1rem; color: #1e293b; }
+  </style>
+</head>
+<body>
+  <!-- TikTok's Login Kit refuses https://localhost as a redirect URI. TikTok sends the owner here after sign-in; this
+       page passes the code and state on to the News Clipper app on the owner's own computer (a fixed address, so it
+       cannot be used to send anyone elsewhere). Nothing is stored or sent anywhere else. -->
+  <p id="msg">Returning to News Clipper…</p>
+  <script>
+    var target = "https://localhost/api/v1/platforms/tiktok/callback";
+    var q = new URLSearchParams(location.search);
+    var keep = new URLSearchParams();
+    ["code", "state", "error", "error_description", "scopes"].forEach(function (k) {
+      if (q.has(k)) keep.set(k, q.get(k));
+    });
+    location.replace(target + "?" + keep.toString());
+  </script>
+  <noscript>Turn on JavaScript to finish connecting TikTok to News Clipper.</noscript>
+</body>
+</html>
